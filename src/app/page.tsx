@@ -3,7 +3,7 @@
 import React from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Card, CardContent } from "@/components/ui/card"
-import { ImageCropper } from "@/lib/image-cropper"
+import { ImageCropper } from "@/components/image-cropper"
 import { FileWithPath, useDropzone } from "react-dropzone"
 import SvgText from "@/components/svg-text"
 
