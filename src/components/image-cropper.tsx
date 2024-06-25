@@ -37,6 +37,7 @@ export function ImageCropper({
   setSelectedFile,
 }: ImageCropperProps) {
   const aspect = 1
+
   const imgRef = React.useRef<HTMLImageElement | null>(null)
 
   const [crop, setCrop] = React.useState<Crop>()
@@ -52,10 +53,38 @@ export function ImageCropper({
 
   function onCropComplete(crop: PixelCrop) {
     if (imgRef.current && crop.width && crop.height) {
-      const canvas = document.createElement("canvas")
-      canvasPreview(imgRef.current, canvas, crop)
-      setCroppedImageUrl(canvas.toDataURL("image/png"))
+      const croppedImageUrl = getCroppedImg(imgRef.current, crop)
+      setCroppedImageUrl(croppedImageUrl)
     }
+  }
+
+  function getCroppedImg(image: HTMLImageElement, crop: PixelCrop): string {
+    const canvas = document.createElement("canvas")
+    const scaleX = image.naturalWidth / image.width
+    const scaleY = image.naturalHeight / image.height
+
+    canvas.width = crop.width * scaleX
+    canvas.height = crop.height * scaleY
+
+    const ctx = canvas.getContext("2d")
+
+    if (ctx) {
+      ctx.imageSmoothingEnabled = false
+
+      ctx.drawImage(
+        image,
+        crop.x * scaleX,
+        crop.y * scaleY,
+        crop.width * scaleX,
+        crop.height * scaleY,
+        0,
+        0,
+        crop.width * scaleX,
+        crop.height * scaleY,
+      )
+    }
+
+    return canvas.toDataURL("image/png", 1.0)
   }
 
   async function onCrop() {
@@ -90,7 +119,7 @@ export function ImageCropper({
             <Avatar className="size-full rounded-none">
               <AvatarImage
                 ref={imgRef}
-                className="size-full rounded-none object-cover"
+                className="size-full rounded-none "
                 alt="Image Cropper Shell"
                 src={selectedFile?.preview}
                 onLoad={onImageLoad}
@@ -146,63 +175,4 @@ export function centerAspectCrop(
     mediaWidth,
     mediaHeight,
   )
-}
-
-const TO_RADIANS = Math.PI / 180
-
-async function canvasPreview(
-  image: HTMLImageElement,
-  canvas: HTMLCanvasElement,
-  crop: PixelCrop,
-  scale = 1,
-  rotate = 0,
-) {
-  const ctx = canvas.getContext("2d")
-
-  if (!ctx) {
-    throw new Error("No 2d context")
-  }
-
-  const scaleX = image.naturalWidth / image.width
-  const scaleY = image.naturalHeight / image.height
-  const pixelRatio = window.devicePixelRatio
-
-  canvas.width = crop.width * scaleX * pixelRatio
-  canvas.height = crop.height * scaleY * pixelRatio
-
-  ctx.scale(pixelRatio, pixelRatio)
-  ctx.imageSmoothingQuality = "high"
-
-  const cropX = crop.x * scaleX
-  const cropY = crop.y * scaleY
-
-  const rotateRads = rotate * TO_RADIANS
-  const centerX = image.naturalWidth / 2
-  const centerY = image.naturalHeight / 2
-
-  ctx.save()
-
-  // Move the crop origin to the canvas origin (0,0)
-  ctx.translate(-cropX, -cropY)
-  // Move the origin to the center of the original position
-  ctx.translate(centerX, centerY)
-  // Rotate around the origin
-  ctx.rotate(rotateRads)
-  // Scale the image
-  ctx.scale(scale, scale)
-  // Move the center of the image to the origin (0,0)
-  ctx.translate(-centerX, -centerY)
-  ctx.drawImage(
-    image,
-    0,
-    0,
-    image.naturalWidth,
-    image.naturalHeight,
-    0,
-    0,
-    image.naturalWidth,
-    image.naturalHeight,
-  )
-
-  ctx.restore()
 }
