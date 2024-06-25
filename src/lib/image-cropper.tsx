@@ -94,7 +94,7 @@ export function ImageCropper({
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger>
-        <Avatar className="size-28 cursor-pointer ring-offset-2 ring-2 ring-slate-200">
+        <Avatar className="size-36 cursor-pointer ring-offset-2 ring-2 ring-slate-200">
           <AvatarImage
             src={croppedImage ? croppedImage : selectedFile?.preview}
             alt="@shadcn"

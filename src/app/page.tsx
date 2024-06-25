@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Card, CardContent } from "@/components/ui/card"
 import { ImageCropper } from "@/lib/image-cropper"
 import { FileWithPath, useDropzone } from "react-dropzone"
+import SvgText from "@/components/svg-text"
 
 export type FileWithPreview = FileWithPath & {
   preview: string
@@ -43,21 +44,29 @@ export default function Page() {
     accept,
   })
 
-  return selectedFile ? (
-    <ImageCropper
-      dialogOpen={isDialogOpen}
-      setDialogOpen={setDialogOpen}
-      selectedFile={selectedFile}
-      setSelectedFile={setSelectedFile}
-    />
-  ) : (
-    <Avatar
-      {...getRootProps()}
-      className="size-28 cursor-pointer ring-offset-2 ring-2 ring-slate-200"
-    >
-      <input {...getInputProps()} />
-      <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-      <AvatarFallback>CN</AvatarFallback>
-    </Avatar>
+  return (
+    <div className="relative ">
+      {selectedFile ? (
+        <ImageCropper
+          dialogOpen={isDialogOpen}
+          setDialogOpen={setDialogOpen}
+          selectedFile={selectedFile}
+          setSelectedFile={setSelectedFile}
+        />
+      ) : (
+        <Avatar
+          {...getRootProps()}
+          className="size-36 cursor-pointer ring-offset-2 ring-2 ring-slate-200"
+        >
+          <input {...getInputProps()} />
+          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+          <AvatarFallback>CN</AvatarFallback>
+        </Avatar>
+      )}
+
+      <div className=" absolute -bottom-12 left-28 ">
+        <SvgText />
+      </div>
+    </div>
   )
 }
