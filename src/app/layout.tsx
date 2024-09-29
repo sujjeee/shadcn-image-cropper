@@ -6,7 +6,7 @@ import { SiteFooter } from "@/components/site-footer"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://shadcn-uploader.vercel.app"),
+  metadataBase: new URL("https://shadcn-image-cropper.vercel.app"),
   title: "Uploader",
   description: "Shadcn uploader & image cropper ui",
   keywords: [
