@@ -7,8 +7,8 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://shadcn-image-cropper.vercel.app"),
-  title: "Uploader",
-  description: "Shadcn uploader & image cropper ui",
+  title: "Image cropper",
+  description: "Shadcn uploader & image cropper",
   keywords: [
     "shadcn",
     "shadcn uploader",
