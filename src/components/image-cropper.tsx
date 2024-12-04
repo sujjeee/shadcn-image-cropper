@@ -1,14 +1,12 @@
 "use client"
 
 import React, { type SyntheticEvent } from "react"
-
 import ReactCrop, {
   centerCrop,
   makeAspectCrop,
   type Crop,
   type PixelCrop,
 } from "react-image-crop"
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -18,7 +16,6 @@ import {
   DialogFooter,
   DialogTrigger,
 } from "@/components/ui/dialog"
-
 import "react-image-crop/dist/ReactCrop.css"
 import { FileWithPreview } from "@/app/page"
 import { CropIcon, Trash2Icon } from "lucide-react"
@@ -37,9 +34,7 @@ export function ImageCropper({
   setSelectedFile,
 }: ImageCropperProps) {
   const aspect = 1
-
   const imgRef = React.useRef<HTMLImageElement | null>(null)
-
   const [crop, setCrop] = React.useState<Crop>()
   const [croppedImageUrl, setCroppedImageUrl] = React.useState<string>("")
   const [croppedImage, setCroppedImage] = React.useState<string>("")
@@ -107,8 +102,8 @@ export function ImageCropper({
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </DialogTrigger>
-      <DialogContent className="p-0 gap-0">
-        <div className="p-6 size-full">
+      <DialogContent className="p-0 gap-0 max-w-[90vw] w-[600px] max-h-[90vh] flex flex-col">
+        <div className="p-6 flex-grow overflow-auto scrollbar-hide">
           <ReactCrop
             crop={crop}
             onChange={(_, percentCrop) => setCrop(percentCrop)}
@@ -119,7 +114,7 @@ export function ImageCropper({
             <Avatar className="size-full rounded-none">
               <AvatarImage
                 ref={imgRef}
-                className="size-full rounded-none "
+                className="size-full rounded-none object-contain aspect-auto"
                 alt="Image Cropper Shell"
                 src={selectedFile?.preview}
                 onLoad={onImageLoad}
@@ -130,7 +125,7 @@ export function ImageCropper({
             </Avatar>
           </ReactCrop>
         </div>
-        <DialogFooter className="p-6 pt-0 justify-center ">
+        <DialogFooter className="p-6 pt-0 justify-center shrink-0">
           <DialogClose asChild>
             <Button
               size={"sm"}
@@ -155,7 +150,6 @@ export function ImageCropper({
   )
 }
 
-// Helper function to center the crop
 export function centerAspectCrop(
   mediaWidth: number,
   mediaHeight: number,
